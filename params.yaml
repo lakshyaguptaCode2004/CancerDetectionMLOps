@@ -1,0 +1,47 @@
+# ============================================================
+# params.yaml - Central hyperparameter config for DVC + MLflow
+# ============================================================
+
+data:
+  raw_dir: "data/raw"
+  processed_dir: "data/processed"
+  image_size: [224, 224]
+  batch_size: 32
+  validation_split: 0.2
+  classes:
+    - adenocarcinoma
+    - large.cell.carcinoma
+    - squamous.cell.carcinoma
+    - normal
+
+augmentation:
+  rotation_range: 20
+  zoom_range: 0.2
+  horizontal_flip: true
+  width_shift_range: 0.1
+  height_shift_range: 0.1
+  fill_mode: "nearest"
+
+model:
+  input_shape: [224, 224, 3]
+  num_classes: 4
+  dropout_rate: 0.5
+  dense_units: 128
+
+training:
+  epochs: 20
+  batch_size: 32
+  learning_rate: 0.001
+  optimizer: "adam"
+  loss: "categorical_crossentropy"
+  early_stopping_patience: 5
+  model_checkpoint_path: "models/best_model.h5"
+
+transfer_learning:
+  base_model: "VGG16"
+  fine_tune: true
+  fine_tune_at: 15
+
+mlflow:
+  experiment_name: "CNN Chest Cancer"
+  tracking_uri: "mlruns"

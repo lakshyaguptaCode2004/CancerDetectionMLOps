@@ -1,0 +1,91 @@
+# ============================================================
+# dvc.yaml - DVC Pipeline Definition
+# ============================================================
+# Defines reproducible ML pipeline stages.
+# Run: dvc repro   →  to execute the full pipeline
+# Run: dvc dag     →  to visualize the DAG
+# ============================================================
+
+stages:
+
+  # -------------------------------------------------------
+  # STAGE 1: Data Ingestion
+  # Downloads / validates raw dataset structure
+  # -------------------------------------------------------
+  data_ingestion:
+    cmd: python src/data_ingestion.py
+    deps:
+      - src/data_ingestion.py
+      - data/raw
+    params:
+      - params.yaml:
+          - data.raw_dir
+          - data.classes
+    outs:
+      - data/processed/class_counts.json
+    desc: "Validate raw dataset and generate class distribution stats"
+
+  # -------------------------------------------------------
+  # STAGE 2: Preprocessing
+  # Resize, normalize, and augment images
+  # -------------------------------------------------------
+  preprocessing:
+    cmd: python src/preprocessing.py
+    deps:
+      - src/preprocessing.py
+      - data/raw
+      - data/processed/class_counts.json
+    params:
+      - params.yaml:
+          - data.image_size
+          - data.batch_size
+          - augmentation
+    outs:
+      - data/processed/preprocessing_done.flag
+    desc: "Preprocess images: resize, normalize, augmentation config"
+
+  # -------------------------------------------------------
+  # STAGE 3: Model Training
+  # Train CNN with MLflow tracking
+  # -------------------------------------------------------
+  training:
+    cmd: python src/train_cnn.py
+    deps:
+      - src/train_cnn.py
+      - data/raw
+      - data/processed/preprocessing_done.flag
+    params:
+      - params.yaml:
+          - training
+          - model
+          - augmentation
+          - mlflow
+    outs:
+      - models/best_model.h5
+    metrics:
+      - data/processed/metrics.json:
+          cache: false
+    desc: "Train CNN model and log experiments to MLflow"
+
+  # -------------------------------------------------------
+  # STAGE 4: Evaluation
+  # Evaluate best model on test set
+  # -------------------------------------------------------
+  evaluation:
+    cmd: python src/evaluate.py
+    deps:
+      - src/evaluate.py
+      - models/best_model.h5
+      - data/raw
+    params:
+      - params.yaml:
+          - data
+    metrics:
+      - data/processed/test_metrics.json:
+          cache: false
+    plots:
+      - data/processed/confusion_matrix.csv:
+          cache: false
+          x: predicted
+          y: actual
+    desc: "Evaluate best model on held-out test set"

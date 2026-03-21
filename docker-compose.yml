@@ -1,0 +1,62 @@
+version: "3.9"
+
+# =============================================================
+# docker-compose.yml
+# =============================================================
+# Run the full stack:
+#   - Streamlit app  → http://localhost:8501
+#   - MLflow UI      → http://localhost:5000
+#
+# Usage:
+#   docker-compose up --build
+#   docker-compose down
+# =============================================================
+
+services:
+
+  # ── Streamlit Application ─────────────────────────────────
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: cancer_detection_app
+    ports:
+      - "8501:8501"
+    volumes:
+      - ./models:/app/models                     # Mount trained models
+      - ./data/processed:/app/data/processed     # Mount class mapping
+    environment:
+      - TF_CPP_MIN_LOG_LEVEL=2
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8501/_stcore/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    networks:
+      - cancer_net
+
+  # ── MLflow Tracking Server ────────────────────────────────
+  mlflow:
+    image: python:3.9-slim
+    container_name: cancer_mlflow
+    working_dir: /mlflow
+    command: >
+      bash -c "pip install mlflow==2.7.1 -q &&
+               mlflow server
+               --backend-store-uri /mlflow/mlruns
+               --default-artifact-root /mlflow/mlartifacts
+               --host 0.0.0.0
+               --port 5000"
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./mlruns:/mlflow/mlruns
+      - ./mlartifacts:/mlflow/mlartifacts
+    restart: unless-stopped
+    networks:
+      - cancer_net
+
+networks:
+  cancer_net:
+    driver: bridge

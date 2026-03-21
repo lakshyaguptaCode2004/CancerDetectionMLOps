@@ -1,0 +1,11 @@
+# DVC ignore file
+# Files and patterns to exclude from DVC tracking
+
+.git
+__pycache__
+*.pyc
+*.pyo
+.ipynb_checkpoints
+mlruns/
+mlartifacts/
+*.log
