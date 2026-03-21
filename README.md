@@ -1,11 +1,11 @@
-<<<<<<< HEAD
-# 🫁 Chest Cancer Classification using CNN and MLOps
+
+#  Chest Cancer Classification using CNN and MLOps
 
 > **A production-grade Deep Learning + MLOps project for classifying chest CT-scan images into 4 cancer categories using a custom CNN and VGG16 transfer learning — tracked with MLflow and versioned with DVC.**
 
 ---
 
-## 📋 Table of Contents
+##  Table of Contents
 
 - [Overview](#overview)
 - [Dataset](#dataset)
@@ -22,16 +22,16 @@
 
 ---
 
-## 📌 Overview
+## Overview
 
 This project builds an **end-to-end machine learning pipeline** for detecting chest cancer from CT-scan images. It demonstrates:
 
-- 🧠 Custom CNN and VGG16 transfer learning
+- Custom CNN and VGG16 transfer learning
 - 🔬 8 MLflow experiments with hyperparameter tracking
-- 📦 DVC pipeline for reproducibility
-- 🌐 Streamlit web app for real-time predictions
-- 🐳 Docker containerization
-- 📊 Full evaluation suite (confusion matrix, classification report, F1)
+-  DVC pipeline for reproducibility
+-  Streamlit web app for real-time predictions
+-  Docker containerization
+-  Full evaluation suite (confusion matrix, classification report, F1)
 
 ---
 
@@ -108,7 +108,7 @@ CancerDetectionMLOps/
 
 ---
 
-## 🧠 CNN Architecture
+##  CNN Architecture
 
 ### Custom CNN
 
@@ -202,7 +202,7 @@ dvc push
 
 ---
 
-## ⚙️ Setup & Installation
+##  Setup & Installation
 
 ### Conda Environment (Recommended)
 
@@ -223,7 +223,7 @@ python -m ipykernel install --user --name cancer_detection \
 
 ---
 
-## 🚀 How to Run
+##  How to Run
 
 ### 1. Download Dataset
 
@@ -269,7 +269,7 @@ jupyter notebook
 
 ---
 
-## 🌐 Streamlit App
+##  Streamlit App
 
 ```bash
 conda activate cancer_detection
@@ -285,7 +285,7 @@ streamlit run app.py
 
 ---
 
-## 🐳 Docker Instructions
+##  Docker Instructions
 
 ```bash
 # Build image
@@ -308,7 +308,7 @@ Open in browser: **http://localhost:8501**
 
 ---
 
-## 📈 Results
+##  Results
 
 After training, evaluate results are saved in:
 
@@ -339,7 +339,7 @@ After training, evaluate results are saved in:
 
 ---
 
-## 🤝 Contributing
+##  Contributing
 
 Pull requests are welcome. For major changes, open an issue first.
 
@@ -349,9 +349,3 @@ Pull requests are welcome. For major changes, open an issue first.
 
 This project is for **educational and research purposes only**. It is NOT a medical device and should NOT be used for clinical diagnosis. Always consult a qualified physician.
 
----
-
-*Built as a resume-level MLOps project demonstrating Deep Learning + MLflow + DVC + Docker + Streamlit.*
-=======
-# CancerDetectionMLOps
->>>>>>> 7ed30366f6b275ad93c48de948235173948ed774
